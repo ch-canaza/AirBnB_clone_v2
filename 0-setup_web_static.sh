@@ -7,6 +7,6 @@ sudo mkdir -p /data/web_static/releases/test/
 echo "simple content, to test your Nginx configuration" | sudo tee -a /data/web_static/releases/test/index.html
 ln -sf  /data/web_static/releases/test/ /data/web_static/current
 sudo chown -R ubuntu:ubuntu /data/
-content="location /hbnb_static/ {\nalias /data/web_static/current;\n}"
-echo "$content" >> /etc/nginx/sites-available/default
+content="location /hbnb_static/ { alias /data/web_static/current;}"
+echo "$content" | sudo tee -a /etc/nginx/sites-available/default
 sudo service nginx restart
