@@ -1,33 +1,28 @@
 #!/usr/bin/python3
-""" Fabric script (based on the file 1-pack_web_static.py)
-"""
-from fabric.api import local, run, put, env, hosts, env
-import os.path
-from datetime import datetime
-
-env.hosts = ['35.231.195.75', '52.91.219.244']
-env.user = "ubuntu"
+''' contains the function do_deploy '''
+from fabric.api import env, sudo, run, put
+from os.path import exists
+env.hosts = ['35.237.244.23', '35.196.221.206']
+env.user = 'ubuntu'
 
 
 def do_deploy(archive_path):
-    """ that distributes an archive to your web servers, using
-    the function do_deploy:"""
-
-    if not archive_path:
+    ''' distributes an archive to web servers '''
+    if exists(archive_path) is False:
         return False
-    file_second_arg = archive_path.split("/")[-1]
-    new_file = "/data/web_static/release/" + "{}".format(file_second_arg
-                                                         .split(".")[0])
-    current_path = "data/web_static/current"
+    file_name = archive_path.split('/')[-1]
+    new = '/data/web_static/release/' + \
+          "{}".format(file_name.split('.')[0])
+    current = 'data/web_static/current'
     try:
-        put(archive_path, "/tmp/")
-        run("sudo mkdir -p {}/".format(new_file))
-        run("sudo tar -zxf /tmp/{} -C {}".format(file_second_arg, new_file))
-        run("sudo rm /tmp/{}".format(file_second_arg))
-        run("sudo mv {}/web_static {}/".format(new_file))
-        run("sudo rm -rf {}".format(current_path))
-        run("sudo ln -s {} {}".format(new_file, current_path))
-
+        put(archive_path, '/tmp/')
+        run('sudo mkdir -p {}/'.format(new))
+        run('sudo tar -xzf {} -C {}/'.format(tmp, new))
+        run('sudo rm /tmp/{}'.format(file_name))
+        run('sudo mv {}/web_static {}/'.format(new))
+        run('sudo rm -rf {}'.format(current))
+        run('sudo ln -s {}/ {}'.format(new, current))
         return True
     except:
         return False
+
