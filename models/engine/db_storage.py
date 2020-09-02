@@ -98,6 +98,10 @@ class DBStorage:
         Session = scoped_session(session)
         DBStorage.__session = Session()
 
-    
+    def close(self):
+        '''
+            Closes the current __session attribute
+        '''
+        self.__session.close()
 
 
