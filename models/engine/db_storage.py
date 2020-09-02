@@ -26,9 +26,8 @@ class DBStorage:
         host = os.getenv("HBNB_MYSQL_HOST")
         db = os.getenv("HBNB_MYSQL_DB")
         DBStorage.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}"
-                                      .format(user, password, host, db),
-                                      pool_pre_ping=True)
-        #Base.metadata.create_all(self.__engine)
+                                           .format(user, password, host, db),
+                                           pool_pre_ping=True)
         if os.getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
     """
@@ -60,12 +59,13 @@ class DBStorage:
                 database_dic[key] = objs
             return database_dic
         else:
-            for objs in DBStorage.__session.query(City, State, User,\
-                                             Place, Review, Amenity).all():
+            for objs in DBStorage.__session.query(City, State, User,
+                                                  Place, Review,
+                                                  Amenity).all():
                 key = "{}.{}".format(type(objs).__class__.__name__, objs.id)
                 database_dic[key] = objs
             return database_dic
-           
+
     def new(self, obj):
         """ adds the object to the current database session """
         self.__session.add(obj)
@@ -78,7 +78,6 @@ class DBStorage:
         """delete from the current database session obj if not None"""
         if obj:
             self.__session.delete(obj)
-            #self.save()
 
     def reload(self):
         """ * create all tables in the database (feature\
@@ -90,11 +89,11 @@ class DBStorage:
             (self.__engine) by using a \
             sessionmaker - the option expire_on_commit \
             must be set to False ; and scoped_session - \
-            to make sure your Session is thread-safe"""
+                to make sure your Session is thread-safe"""
 
         Base.metadata.create_all(DBStorage.__engine)
         session = sessionmaker(bind=DBStorage.__engine,
-                                expire_on_commit=False)
+                               expire_on_commit=False)
         Session = scoped_session(session)
         DBStorage.__session = Session()
 
@@ -103,5 +102,3 @@ class DBStorage:
             Closes the current __session attribute
         '''
         self.__session.close()
-
-

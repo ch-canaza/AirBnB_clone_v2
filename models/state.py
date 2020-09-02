@@ -9,8 +9,6 @@ from models.city import City
 import os
 
 
-
-
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = "states"
