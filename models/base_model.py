@@ -51,7 +51,6 @@ class BaseModel:
         self.updated_at = datetime.now()
         storage.new(self)
         storage.save()
-        
 
     def to_dict(self):
         """Convert instance into dict format"""
@@ -64,7 +63,6 @@ class BaseModel:
         if '_sa_instance_state' in dictionary:
             del(dictionary['_sa_instance_state'])
         return dictionary
-
 
     def delete(self):
         """ missing docstring """
