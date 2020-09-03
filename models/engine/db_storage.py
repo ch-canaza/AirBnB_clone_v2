@@ -98,7 +98,5 @@ class DBStorage:
         DBStorage.__session = Session()
 
     def close(self):
-        '''
-            Closes the current __session attribute
-        '''
+        """ Closes the current __session attribute """
         self.__session.close()

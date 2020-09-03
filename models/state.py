@@ -25,6 +25,7 @@ class State(BaseModel, Base):
 
         @property
         def cities(self):
+            """ setter """
             listcities = []
             for id, city in models.storage.all(City).items():
                 if self.id == city.state_id:

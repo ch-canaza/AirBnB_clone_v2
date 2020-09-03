@@ -21,7 +21,7 @@ class BaseModel:
         """
         from datetime import datetime
         from models import storage
-        if kwargs != {}:
+        if kwargs:
             if self.id is None:
                 self.id = str(uuid.uuid4())
             for key, value in kwargs.items():
@@ -54,18 +54,19 @@ class BaseModel:
         
 
     def to_dict(self):
-        """Return a dictionary representation of the BaseModel instance.
-        Includes the key/value pair __class__ representing
-        the class name of the object.
-        """
-        my_dict = self.__dict__.copy()
-        my_dict["__class__"] = str(type(self).__name__)
-        my_dict["created_at"] = self.created_at.isoformat()
-        my_dict["updated_at"] = self.updated_at.isoformat()
-        my_dict.pop("_sa_instance_state", None)
-        return my_dict
+        """Convert instance into dict format"""
+        dictionary = {}
+        dictionary.update(self.__dict__)
+        dictionary.update({'__class__':
+                          (str(type(self)).split('.')[-1]).split('\'')[0]})
+        dictionary['updated_at'] = self.updated_at.isoformat()
+        dictionary['created_at'] = self.created_at.isoformat()
+        if '_sa_instance_state' in dictionary:
+            del(dictionary['_sa_instance_state'])
+        return dictionary
 
-        
+
     def delete(self):
+        """ missing docstring """
         from models import storage
         models.storage.delete(self)
